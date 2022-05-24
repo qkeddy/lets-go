@@ -8,22 +8,25 @@ const { User } = require("../models");
 const resolvers = {
     Query: {
         // Find a single or multiple users
-        users: async (parent, { _id }) => {
-            const params = _id ? { _id } : {};
-            return await User.find(params).populate("savedActivities");
+        users: async (parent, { _id }, context) => {
+            if (context.user) {
+                const params = _id ? { _id } : {};
+                return await User.find(params).populate("friends").populate("activities");
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
         },
 
         // Get the profile of the logged in user and populate savedBooks
-        me: async (parent, args, context, xxx) => {
-            console.log({ parent, args, context, xxx });
+        me: async (parent, args, context) => {
             if (context.user) {
-                return await User.findOne({ _id: context.user._id }).populate("savedActivities");
+                return await User.findOne({ _id: context.user._id }).populate("friends").populate("activities");
             }
-            throw new AuthenticationError("You need to be logged in!");
+            throw new AuthenticationError("You need to be logged in to use this feature.");
         },
     },
 
     Mutation: {
+        // Login a user with username or email and password (required) and and return the user obj and token
         login: async (parent, { username, email, password }) => {
             const user = await User.findOne({ $or: [{ username }, { email }] });
 
@@ -42,13 +45,40 @@ const resolvers = {
         },
 
         // Create a new user based upon 3 required fields and return the user obj and token
-        createUser: async (parent, { username, email, password }) => {
-            const user = await User.create({ username, email, password });
+        createUser: async (parent, { username, email, password, shortBio, homeCity }) => {
+            const user = await User.create({ username, email, password, shortBio, homeCity });
             const token = signToken(user);
             return { token, user };
         },
 
- 
+        // Edit a user's non required fields (`args`) and return an updated user
+        editUser: async (parent, args, context) => {
+            if (context.user) {
+                const user = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // Spreads the inbound args and matches to the field.
+                    { $set: { ...args } },
+                    { new: true }
+                );
+                console.log(user);
+                return user;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+
+        // Add a friend to a user and return an updated user
+        addFriend: async (parent, { id }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { friends: { _id: id } } },
+                    { new: true }
+                );
+                return updatedUser;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
     },
 };
 

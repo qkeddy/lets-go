@@ -12,6 +12,7 @@ const typeDefs = gql`
         homeCity: String
         friends: [User]
         activities: [Activity]
+        friendCount: Int
     }
 
     type Auth {

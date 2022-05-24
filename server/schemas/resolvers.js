@@ -8,17 +8,20 @@ const { User } = require("../models");
 const resolvers = {
     Query: {
         // Find a single or multiple users
-        users: async (parent, { _id }) => {
-            const params = _id ? { _id } : {};
-            return await User.find(params).populate("savedActivities");
+        users: async (parent, { _id }, context) => {
+            if (context.user) {
+                const params = _id ? { _id } : {};
+                return await User.find(params).populate("friends").populate("activities");
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
         },
 
         // Get the profile of the logged in user and populate savedBooks
         me: async (parent, args, context) => {
             if (context.user) {
-                return await User.findOne({ _id: context.user._id }).populate("savedActivities");
+                return await User.findOne({ _id: context.user._id }).populate("friends").populate("activities");
             }
-            throw new AuthenticationError("You need to be logged in!");
+            throw new AuthenticationError("You need to be logged in to use this feature.");
         },
     },
 

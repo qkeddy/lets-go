@@ -52,7 +52,7 @@ const typeDefs = gql`
         editUser(shortBio: String!, homeCity: String!): User
 
         # Add a friend to a user
-        #addFriend(id: ID!): User
+        addFriend(id: ID!): User
 
         # Remove a friend from a user
         #removeFriend(id: ID!): User

@@ -54,9 +54,28 @@ const resolvers = {
         // Edit a user's non required fields (`args`) and return an updated user
         editUser: async (parent, args, context) => {
             if (context.user) {
-                const user = await User.findOneAndUpdate({ _id: context.user._id }, { $set: { ...args } }, { new: true });
+                const user = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // Spreads the inbound args and matches to the field.
+                    { $set: { ...args } },
+                    { new: true }
+                );
                 console.log(user);
                 return user;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+
+        // Add a friend to a user and return an updated user
+        addFriend: async (parent, { id }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { friends: { _id: id } } },
+                    { new: true }
+                );
+                return updatedUser;
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },

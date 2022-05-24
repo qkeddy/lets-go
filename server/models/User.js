@@ -1,8 +1,13 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
-// import schema from Book.js
-// const bookSchema = require('./Book');
+const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return regex.test(email);
+};
+
+// Import schema from Activities.js
+const bookSchema = require("./Activities");
 
 const userSchema = new Schema(
     {
@@ -10,12 +15,13 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
+            trip: true,
         },
         email: {
             type: String,
             required: true,
             unique: true,
-            match: [/.+@.+\..+/, "Must use a valid email address"],
+            match: [validateEmail, "Must use a valid email address"],
         },
         password: {
             type: String,
@@ -27,15 +33,21 @@ const userSchema = new Schema(
         homeCity: {
             type: String,
         },
-        friends: {
-            type: String,
-        },
-        activities: {
-            // TODO - Update
-            type: String,
-        },
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
+        activities: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Activity",
+            },
+        ],
     },
-    // set this to use virtual below
+
+    // Set this to use virtual below
     {
         toJSON: {
             virtuals: true,
@@ -43,26 +55,27 @@ const userSchema = new Schema(
     }
 );
 
-// hash user password
+// Hash user password with bcrypt
 userSchema.pre("save", async function (next) {
     if (this.isNew || this.isModified("password")) {
         const saltRounds = 10;
         this.password = await bcrypt.hash(this.password, saltRounds);
     }
-
+    // TODO - What does this do?
     next();
 });
 
-// custom method to compare and validate password for logging in
+// Custom method to compare and validate password for logging in
 userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
 };
 
-// when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
-// userSchema.virtual('bookCount').get(function () {
-//   return this.savedBooks.length;
-// });
+// When we query a user, we'll also get another field called `friendCount` with the number of friends the user has
+userSchema.virtual("friendCount").get(function () {
+    return this.friends.length;
+});
 
+// Initialize the `User` model
 const User = model("User", userSchema);
 
 module.exports = User;

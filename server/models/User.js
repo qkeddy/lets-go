@@ -21,7 +21,7 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            match: [validateEmail, "Must use a valid email address"],
+            validate: [validateEmail, "Must use a valid email address"],
         },
         password: {
             type: String,
@@ -39,11 +39,11 @@ const userSchema = new Schema(
                 ref: "User",
             },
         ],
-        activities: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Activity",
-            },
+        activities: [String
+            // {
+            //     type: Schema.Types.ObjectId,
+            //     ref: "Activity",
+            // },
         ],
     },
 

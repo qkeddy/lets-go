@@ -57,14 +57,14 @@ const typeDefs = gql`
         # Remove a friend from a user
         #removeFriend(id: ID!): User
 
-        # Create an activity
-        #createActivity(name): User
-
         # Add an activity to a user
         #addActivity(id: ID!): User
 
         # Remove an activity from a user
         #removeActivity(id: ID!): User
+
+        # Create an activity
+        #createActivity(name): User
 
         # Add an participant to an activity
         #addParticipant(id: ID!): Activity

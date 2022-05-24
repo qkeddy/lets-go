@@ -23,6 +23,7 @@ const resolvers = {
     },
 
     Mutation: {
+        // Login a user with username or email and password (required) and and return the user obj and token
         login: async (parent, { username, email, password }) => {
             const user = await User.findOne({ $or: [{ username }, { email }] });
 
@@ -47,15 +48,10 @@ const resolvers = {
             return { token, user };
         },
 
-        // Create a new user based upon 3 required fields and return the user obj and token
+        // Edit a user's non required fields (`args`) and return an updated user
         editUser: async (parent, args, context) => {
-            console.log(context.user._id);
-            console.log(args.shortBio);
             if (context.user) {
-                const user = await User.findOneAndUpdate(
-                    { _id: context.user._id },
-                    { $set: { ...args } },
-                    { new: true });
+                const user = await User.findOneAndUpdate({ _id: context.user._id }, { $set: { ...args } }, { new: true });
                 console.log(user);
                 return user;
             }

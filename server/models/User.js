@@ -21,8 +21,20 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    // set savedBooks to be an array of data that adheres to the bookSchema
-    // savedBooks: [bookSchema],
+    shortBio: {
+      type: String
+    },
+    homeCity: {
+      type: String
+    },
+    friends: {
+      type: String
+    },
+    activities: {
+      // TODO - Update
+      type: String
+
+    }
   },
   // set this to use virtual below
   {

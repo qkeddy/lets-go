@@ -14,8 +14,7 @@ const resolvers = {
         },
 
         // Get the profile of the logged in user and populate savedBooks
-        me: async (parent, args, context, xxx) => {
-            console.log({ parent, args, context, xxx });
+        me: async (parent, args, context) => {
             if (context.user) {
                 return await User.findOne({ _id: context.user._id }).populate("savedActivities");
             }
@@ -42,13 +41,26 @@ const resolvers = {
         },
 
         // Create a new user based upon 3 required fields and return the user obj and token
-        createUser: async (parent, { username, email, password }) => {
-            const user = await User.create({ username, email, password });
+        createUser: async (parent, { username, email, password, shortBio, homeCity }) => {
+            const user = await User.create({ username, email, password, shortBio, homeCity });
             const token = signToken(user);
             return { token, user };
         },
 
- 
+        // Create a new user based upon 3 required fields and return the user obj and token
+        editUser: async (parent, args, context) => {
+            console.log(context.user._id);
+            console.log(args.shortBio);
+            if (context.user) {
+                const user = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $set: { ...args } },
+                    { new: true });
+                console.log(user);
+                return user;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
     },
 };
 

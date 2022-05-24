@@ -1,5 +1,12 @@
+.routesContainer {
+  width: 100vw;
+  height: 80vh;
+
+}
+
 .App {
   text-align: center;
+  background-color: black;
 }
 
 .App-logo {

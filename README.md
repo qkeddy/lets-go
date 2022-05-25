@@ -6,7 +6,6 @@
 
  Let’s Go is a new innovative application for finding activities/events with ease. Users will be able to register for these events with a simple click of a button once an account is created through the main page. Users can also interact with other users that share similiar interest(s).
 
-
 ## Table of Contents (Optional)
 
 - [Installation](#installation)

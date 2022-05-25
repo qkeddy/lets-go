@@ -4,6 +4,7 @@ const { AuthenticationError } = require("apollo-server-express");
 
 // Import Mongoose data model
 const { User } = require("../models");
+const Activity = require("../models/Activities");
 
 const resolvers = {
     Query: {

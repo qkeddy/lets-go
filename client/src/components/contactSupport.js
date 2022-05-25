@@ -2,7 +2,8 @@ import emailjs from '@emailjs/browser';
 import React, { useRef } from 'react';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
-import './contactSupport'
+import TextField from '@mui/material/TextField';
+import './contactSupport.css'
 
 
 export default function Contact() {
@@ -29,22 +30,31 @@ export default function Contact() {
     };
 
     return (
+
         <form ref={form} onSubmit={sendEmail}>
-            <div className='inputs'>
-            <label>Name</label>
-            <input type="text" name="user_name" />
+            <div className='formContainer'>
+                <h1 className='inputs'>Contact Us</h1>
+                <div className='inputsOne'>
+                    <TextField id="filled-basic" label="Name" variant="filled" name='name' />
+                    <TextField id="filled-basic" label="Email" variant="filled" name='email' />
+                </div>
+                <div className='inputs'>
+                    <TextField
+                        id="filled-multiline-static"
+                        label="Message"
+                        multiline
+                        rows={6}
+                        placeholder="Message"
+                        variant="filled"
+                        name='message'
+                    />
+                </div>
+                <div className='button'>
+                    <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+                        Send
+                    </Button>
+                </div>
             </div>
-            <div className='inputs'>
-            <label>Email</label>
-            <input type="email" name="user_email" />
-            </div>
-            <div className='inputs'>
-            <label>Message</label>
-            <textarea name="message" />
-            </div>
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
-                Send
-            </Button>
         </form>
     )
 }

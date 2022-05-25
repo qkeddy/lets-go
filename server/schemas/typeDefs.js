@@ -32,7 +32,7 @@ const typeDefs = gql`
 
     type Query {
         # Supports query of one or multiple users
-        users(_id: String): [User]
+        users(userId: String): [User]
 
         # Query for the logged in user of "User" type and return only selected fields.
         me: User
@@ -52,25 +52,25 @@ const typeDefs = gql`
         editUser(shortBio: String!, homeCity: String!): User
 
         # Add a friend to a user
-        addFriend(id: ID!): User
+        addFriend(friendId: ID!): User
 
         # Remove a friend from a user
-        removeFriend(id: ID!): User
+        removeFriend(friendId: ID!): User
 
         # Add an activity to a user
-        addActivity(id: ID!): User
+        addActivity(activityId: ID!): User
 
         # Remove an activity from a user
-        removeActivity(id: ID!): User
+        removeActivity(activityId: ID!): User
 
         # Create an activity
         createActivity(name: String!, location: String!, lng: Int, lat: Int, description: String!): Activity
 
         # Add an participant to an activity
-        addParticipant(userId: ID!, activityId: ID!): Activity
+        addParticipant(activityId: ID!): Activity
 
         # Remove an participant to an activity
-        removeParticipant(userId: ID!, activityId: ID!): Activity
+        removeParticipant(activityId: ID!): Activity
     }
 `;
 

@@ -6,6 +6,7 @@ const validateEmail = (email) => {
     return regex.test(email);
 };
 
+
 const userSchema = new Schema(
     {
         username: {

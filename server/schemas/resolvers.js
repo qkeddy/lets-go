@@ -2,17 +2,18 @@
 const { signToken } = require("../utils/auth");
 const { AuthenticationError } = require("apollo-server-express");
 
-// Import Mongoose data model
-const { User } = require("../models");
-const Activity = require("../models/Activities");
+// Import Mongoose data model imports
+const { User, Activity } = require("../models");
+// const User  = require("../models/User");
+// const Activity = require("../models/Activities");
 
 const resolvers = {
     Query: {
         // Find a single or multiple users
-        users: async (parent, { _id }, context) => {
+        users: async (parent, { userId }, context) => {
             if (context.user) {
-                const params = _id ? { _id } : {};
-                return await User.find(params).populate("friends").populate("activities");
+                const params = userId ? { _id: userId } : {};
+                return await User.find(params);
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
@@ -20,7 +21,16 @@ const resolvers = {
         // Get the profile of the logged in user and populate savedBooks
         me: async (parent, args, context) => {
             if (context.user) {
-                return await User.findOne({ _id: context.user._id }).populate("friends").populate("activities");
+                return await User.findOne({ _id: context.user._id });
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+
+        // Get the profile of the logged in user and populate savedBooks
+        activities: async (parent, { activityId }, context) => {
+            if (context.user) {
+                const params = activityId ? { _id: activityId } : {};
+                return await Activity.find(params);
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
@@ -68,12 +78,12 @@ const resolvers = {
         },
 
         // Add a friend to a user and return an updated user
-        addFriend: async (parent, { id }, context) => {
+        addFriend: async (parent, { friendId }, context) => {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
                     // `addToSet` only adds to the array if it does not exist
-                    { $addToSet: { friends: { _id: id } } },
+                    { $addToSet: { friends: { _id: friendId } } },
                     { new: true }
                 );
                 return updatedUser;
@@ -81,42 +91,99 @@ const resolvers = {
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
 
-
-
-        // Creates a new activity and returns the activity object
-        createActivity: async (parent, {name, location, lng, lat, description }) => {
-            const activity = await Activity.create({name, location, lng, lat, description});
-            return {activity};
-        },
-        // Adds the participant/user to an activity
-        addParticipant: async (parent, { id }, context) => {
+        // Remove a friend to a user and return an updated user
+        removeFriend: async (parent, { friendId }, context) => {
             if (context.user) {
-                const updatedActivity = await Activity.findOneAndUpdate(
+                const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
                     // `addToSet` only adds to the array if it does not exist
-                    { $addToSet: { participants: { _id: id } } },
+                    { $pull: { friends: { _id: friendId } } },
                     { new: true }
                 );
-                return updatedActivity;
+                return updatedUser;
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
-        // removes participant/user from an activity
-        removeParticipant: async (parent, { id }, context) => {
+
+        // Add an activity to a user and return an updated user
+        addActivity: async (parent, { activityId }, context) => {
             if (context.user) {
-                const updatedActivity = await User.findOneAndUpdate(
+                const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    // `pull` to remove user
-                    { $pull: { participants: { _id: id } } },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { activities: { _id: activityId } } },
                     { new: true }
                 );
+                return updatedUser;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+
+        // Remove an activity to a user and return an updated user
+        removeActivity: async (parent, { activityId }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    // Equivalent to a where clause in SQL
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $pull: { activities: { _id: activityId } } },
+                    { new: true }
+                );
+                return updatedUser;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+
+        // Creates a new activity and returns the activity object
+        createActivity: async (parent, { name, location, lng, lat, description }) => {
+            const activity = await Activity.create({ name, location, lng, lat, description });
+            return activity;
+        },
+
+        // Adds the participant/user to an activity
+        addParticipant: async (parent, { activityId }, context) => {
+            if (context.user) {
+                const updatedActivity = await Activity.findOneAndUpdate(
+                    { _id: activityId },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { participants: { _id: context.user._id } } },
+                    { new: true }
+                );
+
+                await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { activities: { _id: activityId } } },
+                    { new: true }
+                );
+
                 return updatedActivity;
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
-        
 
+        // removes participant/user from an activity
+        removeParticipant: async (parent, { activityId }, context) => {
+            if (context.user) {
+                console.log(`Removing user ${context.user._id} from ${activityId}`);
+                const updatedActivity = await Activity.findOneAndUpdate(
+                    { _id: activityId },
+                    // `pull` to remove user
+                    { $pull: { participants: { _id: context.user._id } } },
+                    { new: true }
+                );
 
+                await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `pull` only adds to the array if it does not exist
+                    { $pull: { activities: { _id: activityId } } },
+                    { new: true }
+                );
+
+                return updatedActivity;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
     },
 };
 

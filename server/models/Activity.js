@@ -34,11 +34,3 @@ const activitySchema = new Schema(
 const Activity = model("Activity", activitySchema);
 
 module.exports = Activity;
-
-// name: String!
-// location: String!
-// lng: Int
-// lat: Int
-// description: String!
-// participants: [User]
-

@@ -1,4 +1,4 @@
 const User = require('./User');
-const Activities = require('./Activities');
+const Activity = require('./Activity');
 
-module.exports = { User, Activities };
+module.exports = { User, Activity };

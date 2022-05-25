@@ -36,6 +36,10 @@ export default function Header() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [open2, setOpen2] = React.useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
+
 
 
 
@@ -43,10 +47,12 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-        <img style={styles.imageStyle} src={Logo} alt='Me' />
-           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <img style={styles.imageStyle} src={Logo} alt="Me" />
+
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Let's Go!
           </Typography>
+
           <div>
             <Button onClick={handleOpen} color="inherit">
               Log In
@@ -69,48 +75,49 @@ export default function Header() {
                     variant="h6"
                     component="h2"
                   >
-                    Text in a modal
+                   Hello
                   </Typography>
                   <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor
-                    ligula.
+                    Hi
                   </Typography>
                 </Box>
               </Fade>
             </Modal>
           </div>
+
           <div>
-            <Button onClick={handleOpen} color="inherit">
+            <Button onClick={handleOpen2} color="inherit">
               Sign Up
             </Button>
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
               open={open}
-              onClose={handleClose}
+              onClose={handleClose2}
               closeAfterTransition
               BackdropComponent={Backdrop}
               BackdropProps={{
                 timeout: 500,
               }}
             >
-              <Fade in={open}>
+              <Fade in={open2}>
                 <Box sx={style}>
                   <Typography
                     id="transition-modal-title"
                     variant="h6"
                     component="h2"
                   >
-                    Text in a modal
+                    Hi
                   </Typography>
                   <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor
-                    ligula.
+                    I am new text
                   </Typography>
                 </Box>
               </Fade>
             </Modal>
           </div>
+
+
         </Toolbar>
       </AppBar>
     </Box>

@@ -56,8 +56,8 @@ export default function App() {
                   path="/thoughts/:thoughtId"
                   element={<SingleThought />}
               /> */}
-              <Route path="/support" element={<Support />} />
-              <Route path="/feedback" element={<Feedback />} />
+              {/* <Route path="/support" element={<Support />} />
+              <Route path="/feedback" element={<Feedback />} /> */}
             </Routes>
           </div>
           <Footer />

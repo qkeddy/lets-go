@@ -1,6 +1,10 @@
 import React from 'react'
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import { styled } from '@mui/system';
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Autocomplete from "@mui/material/Autocomplete";
+
 
 const blue = {
   500: '#007FFF',
@@ -36,7 +40,7 @@ const CustomButton = styled(ButtonUnstyled)`
 `;
 
 const styles = {
-    mainStyles: {
+  mainStyles: {
     textAlign: 'center'
   },
   formStyles: {
@@ -61,16 +65,29 @@ export default function Home() {
 
           <form style={styles.formStyles}>
             <label>
+              {/* input field to choose activity */}
+              <Autocomplete
+                style={styles.inputStyles}
+                freeSolo
+                // id="free-solo-2-demo"
+                disableClearable
+                options={eventList.map((option) => option.activity)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search Events"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                  />
+                )}
+              />
+
               <input
                 type="text"
                 name="name"
                 placeholder="Location"
-                style={styles.inputStyles}
-              />
-              <input
-                type="text"
-                name="name"
-                placeholder="Search For Event"
                 style={styles.inputStyles}
               />
             </label>
@@ -82,3 +99,11 @@ export default function Home() {
     </div>
   );
 }
+
+const eventList = [
+  { activity: "Hiking" },
+  { activity: "Dinner" },
+  { activity: "Clubbing" },
+  { activity: "Movies" },
+  { activity: "Workout" },
+];

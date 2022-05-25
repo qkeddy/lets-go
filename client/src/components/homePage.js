@@ -1,7 +1,6 @@
 import React from 'react'
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import { styled } from '@mui/system';
-import Stack from '@mui/material/Stack';
 
 const blue = {
   500: '#007FFF',
@@ -34,26 +33,50 @@ const CustomButton = styled(ButtonUnstyled)`
     outline: none;
   }
 
-  &.${buttonUnstyledClasses.disabled} {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 `;
 
+const styles = {
+    mainStyles: {
+    textAlign: 'center'
+  },
+  formStyles: {
+    margin: '10px',
+    display: 'block',
+  },
+  inputStyles: {
+    padding: '12px 20px'
+  },
+  buttonStyles: {
+    paddingTop: '1rem'
+  }
 
+}
 
 export default function Home() {
   return (
     <div className="App">
       <header className="App-header">
-        <main>
+        <main style={styles.mainStyles}>
           <h1>Hello! Welcome to Let's Go!</h1>
 
-          <Stack spacing={2} direction="row">
+          <form style={styles.formStyles}>
+            <label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Location"
+                style={styles.inputStyles}
+              />
+              <input
+                type="text"
+                name="name"
+                placeholder="Search For Event"
+                style={styles.inputStyles}
+              />
+            </label>
+          </form>
 
-            <CustomButton>Button</CustomButton>
-
-          </Stack>
+          <CustomButton>Button</CustomButton>
         </main>
       </header>
     </div>

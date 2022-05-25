@@ -11,7 +11,6 @@ import Home from "./components/homePage";
 import Footer from "./components/footer.js";
 import Header from "./components/header.js";
 import Support from "./components/contactSupport";
-import Feedback from "./components/feedback";
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -57,7 +56,6 @@ export default function App() {
                   element={<SingleThought />}
               /> */}
               <Route path="/support" element={<Support />} />
-              <Route path="/feedback" element={<Feedback />} />
             </Routes>
           </div>
           <Footer />

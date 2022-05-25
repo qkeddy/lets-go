@@ -19,7 +19,7 @@ import * as React from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
-import MessageIcon from '@mui/icons-material/Message'
+// import MessageIcon from '@mui/icons-material/Message'
 import { Link } from "react-router-dom";
 import './footer.css'
 
@@ -27,7 +27,7 @@ const styles = {
   footerStyle: {
     background: '#993399',
     justifyContent: 'flex-wrap',
-    width: '15vw',
+    width: '7vw',
     position: 'fixed',
     bottom: '0',
     margin: '0px',
@@ -56,12 +56,6 @@ export default function LabelBottomNavigation() {
         value="Support"
         component={Link} to='/support'
         icon={<ContactSupportIcon />}
-      />
-      <BottomNavigationAction
-        label="Feedback"
-        value="Message"
-        component={Link} to='/feedback'
-        icon={<MessageIcon />}
       />
     </BottomNavigation>
     </div>

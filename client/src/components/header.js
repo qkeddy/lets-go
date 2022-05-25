@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import Logo from '../images/Lets-Go-Logo.png'
 
 
 const style = {

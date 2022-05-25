@@ -8,7 +8,8 @@ import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Logo from '../images/Lets-Go-Logo.png'
-
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 
 const style = {
   position: 'absolute',
@@ -23,11 +24,11 @@ const style = {
 };
 
 const styles = {
-    imageStyle: {
-      width: '3%',
-      flexWrap: 'wrap',
-    }
-  };
+  imageStyle: {
+    width: '3%',
+    flexWrap: 'wrap',
+  }
+};
 
 
 export default function Header() {
@@ -70,16 +71,24 @@ export default function Header() {
             >
               <Fade in={openTwo}>
                 <Box sx={style}>
-                  <Typography
-                    id="transition-modal-title"
-                    variant="h6"
-                    component="h2"
+                  <Stack
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      "& > :not(style)": { m: 1 },
+                    }}
                   >
-                    Login Modal 
-                  </Typography>
-                  <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    Input here
-                  </Typography>
+                    <TextField
+                      helperText="Please enter your name"
+                      id="demo-helper-text-misaligned"
+                      label="Name"
+                    />
+                    <TextField
+                      helperText="Please enter your name"
+                      id="demo-helper-text-misaligned"
+                      label="Name"
+                    />
+                  </Stack>
                 </Box>
               </Fade>
             </Modal>
@@ -116,8 +125,6 @@ export default function Header() {
               </Fade>
             </Modal>
           </div>
-
-
         </Toolbar>
       </AppBar>
     </Box>

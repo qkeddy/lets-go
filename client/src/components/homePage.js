@@ -1,6 +1,10 @@
 import React from 'react'
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
-import { styled } from '@mui/system';
+import { style, styled } from '@mui/system';
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Autocomplete from "@mui/material/Autocomplete";
+
 
 const blue = {
   500: '#007FFF',
@@ -36,12 +40,17 @@ const CustomButton = styled(ButtonUnstyled)`
 `;
 
 const styles = {
-    mainStyles: {
+  mainStyles: {
     textAlign: 'center'
   },
-  formStyles: {
-    margin: '10px',
-    display: 'block',
+  // formStyles: {
+  //   margin: '10px',
+  //   display: 'block',
+  // },
+  labelStyles: {
+    display: 'flex',
+    justifyContent: 'center',
+
   },
   inputStyles: {
     padding: '12px 20px'
@@ -50,7 +59,14 @@ const styles = {
     paddingTop: '1rem'
   }
 
+};
+
+const eventStyle ={
+  // display: 'felx',
+  width: '24%'
 }
+
+
 
 export default function Home() {
   return (
@@ -60,25 +76,69 @@ export default function Home() {
           <h1>Hello! Welcome to Let's Go!</h1>
 
           <form style={styles.formStyles}>
-            <label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Location"
+            <label style={styles.labelStyles}>
+              {/* input field to choose activity */}
+              <Autocomplete
                 style={styles.inputStyles}
+                sx={eventStyle}
+                freeSolo
+                // id="free-solo-2-demo"
+                disableClearable
+                options={eventList.map((option) => option.activity)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search Events"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                  />
+                )}
               />
-              <input
-                type="text"
-                name="name"
-                placeholder="Search For Event"
+
+              {/* input field to choose Location */}
+
+              <Autocomplete
                 style={styles.inputStyles}
+                sx={eventStyle}
+                freeSolo
+                // id="free-solo-2-demo"
+                disableClearable
+                options={locationList.map((option) => option.location)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search Location"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                  />
+                )}
               />
             </label>
           </form>
 
-          <CustomButton>Button</CustomButton>
+          <CustomButton>Search</CustomButton>
         </main>
       </header>
     </div>
   );
 }
+
+const eventList = [
+  { activity: "Hiking" },
+  { activity: "Dinner" },
+  { activity: "Clubbing" },
+  { activity: "Movies" },
+  { activity: "Workout" },
+];
+
+const locationList = [
+  { location: "Seatle" },
+  { location: "Philadelphia" },
+  { location: "Washington D.C." },
+  { location: "New York" },
+  { location: "Atlanta" },
+];

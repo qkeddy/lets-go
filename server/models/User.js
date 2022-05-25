@@ -6,8 +6,6 @@ const validateEmail = (email) => {
     return regex.test(email);
 };
 
-// Import schema from Activities.js
-const bookSchema = require("./Activities");
 
 const userSchema = new Schema(
     {
@@ -39,11 +37,11 @@ const userSchema = new Schema(
                 ref: "User",
             },
         ],
-        activities: [String
-            // {
-            //     type: Schema.Types.ObjectId,
-            //     ref: "Activity",
-            // },
+        activities: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Activity",
+            },
         ],
     },
 

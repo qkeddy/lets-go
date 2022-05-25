@@ -36,9 +36,9 @@ export default function Header() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [open2, setOpen2] = React.useState(false);
-  const handleOpen2 = () => setOpen2(true);
-  const handleClose2 = () => setOpen2(false);
+  const [openTwo, setOpenTwo] = React.useState(false);
+  const handleOpenTwo = () => setOpenTwo(true);
+  const handleCloseTwo = () => setOpenTwo(false);
 
 
 
@@ -54,8 +54,40 @@ export default function Header() {
           </Typography>
 
           <div>
-            <Button onClick={handleOpen} color="inherit">
+            <Button onClick={handleOpenTwo} color="inherit">
               Log In
+            </Button>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={openTwo}
+              onClose={handleCloseTwo}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={openTwo}>
+                <Box sx={style}>
+                  <Typography
+                    id="transition-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    Login Modal 
+                  </Typography>
+                  <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                    Input here
+                  </Typography>
+                </Box>
+              </Fade>
+            </Modal>
+          </div>
+
+          <div>
+            <Button onClick={handleOpen} color="inherit">
+              Sign Up
             </Button>
             <Modal
               aria-labelledby="transition-modal-title"
@@ -75,42 +107,10 @@ export default function Header() {
                     variant="h6"
                     component="h2"
                   >
-                   Hello
+                    Sign Up Modal
                   </Typography>
                   <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    Hi
-                  </Typography>
-                </Box>
-              </Fade>
-            </Modal>
-          </div>
-
-          <div>
-            <Button onClick={handleOpen2} color="inherit">
-              Sign Up
-            </Button>
-            <Modal
-              aria-labelledby="transition-modal-title"
-              aria-describedby="transition-modal-description"
-              open={open}
-              onClose={handleClose2}
-              closeAfterTransition
-              BackdropComponent={Backdrop}
-              BackdropProps={{
-                timeout: 500,
-              }}
-            >
-              <Fade in={open2}>
-                <Box sx={style}>
-                  <Typography
-                    id="transition-modal-title"
-                    variant="h6"
-                    component="h2"
-                  >
-                    Hi
-                  </Typography>
-                  <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    I am new text
+                    Test
                   </Typography>
                 </Box>
               </Fade>

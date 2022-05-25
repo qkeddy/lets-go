@@ -79,6 +79,49 @@ const resolvers = {
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
+
+        // Remove a friend to a user and return an updated user
+        removeFriend: async (parent, { id }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $pull: { friends: { _id: id } } },
+                    { new: true }
+                );
+                return updatedUser;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+
+        // Add an activity to a user and return an updated user
+        addActivity: async (parent, { id }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { activities: { _id: id } } },
+                    { new: true }
+                );
+                return updatedUser;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+
+        // Remove an activity to a user and return an updated user
+        removeActivity: async (parent, { id }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    // Equivalent to a where clause in SQL
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $pull: { activities: { _id: id } } },
+                    { new: true }
+                );
+                return updatedUser;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
     },
 };
 

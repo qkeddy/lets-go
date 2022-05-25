@@ -10,8 +10,8 @@ const typeDefs = gql`
         password: String!
         shortBio: String
         homeCity: String
-        friends: [User]
-        activities: [Activity]
+        friends: [ID]
+        activities: [ID]
         friendCount: Int
     }
 
@@ -55,13 +55,13 @@ const typeDefs = gql`
         addFriend(id: ID!): User
 
         # Remove a friend from a user
-        #removeFriend(id: ID!): User
+        removeFriend(id: ID!): User
 
         # Add an activity to a user
-        #addActivity(id: ID!): User
+        addActivity(id: ID!): User
 
         # Remove an activity from a user
-        #removeActivity(id: ID!): User
+        removeActivity(id: ID!): User
 
         # Create an activity
         #createActivity(name): User

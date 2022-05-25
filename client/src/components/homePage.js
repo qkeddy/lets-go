@@ -40,8 +40,6 @@ const CustomButton = styled(ButtonUnstyled)`
   }
 `;
 
-
-
 export default function Home() {
   return (
     <div className="App">
@@ -58,8 +56,4 @@ export default function Home() {
       </header>
     </div>
   );
-
 }
-
-
-

@@ -47,10 +47,12 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-        <img style={styles.imageStyle} src={Logo} alt='Me' />
-           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <img style={styles.imageStyle} src={Logo} alt="Me" />
+
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Let's Go!
           </Typography>
+
           <div>
             <Button onClick={handleOpenTwo} color="inherit">
               Log In
@@ -82,6 +84,7 @@ export default function Header() {
               </Fade>
             </Modal>
           </div>
+
           <div>
             <Button onClick={handleOpen} color="inherit">
               Sign Up
@@ -113,6 +116,8 @@ export default function Header() {
               </Fade>
             </Modal>
           </div>
+
+
         </Toolbar>
       </AppBar>
     </Box>

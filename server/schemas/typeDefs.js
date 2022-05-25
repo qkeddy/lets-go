@@ -27,7 +27,7 @@ const typeDefs = gql`
         lng: Int
         lat: Int
         description: String!
-        participants: [User]
+        participants: [ID]
     }
 
     type Query {

@@ -4,6 +4,7 @@ const { AuthenticationError } = require("apollo-server-express");
 
 // Import Mongoose data model
 const { User } = require("../models");
+const Activity = require("../models/Activities");
 
 const resolvers = {
     Query: {
@@ -79,6 +80,43 @@ const resolvers = {
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
+
+
+
+        // Creates a new activity and returns the activity object
+        createActivity: async (parent, {name, location, lng, lat, description }) => {
+            const activity = await Activity.create({name, location, lng, lat, description});
+            return {activity};
+        },
+        // Adds the participant/user to an activity
+        addParticipant: async (parent, { id }, context) => {
+            if (context.user) {
+                const updatedActivity = await Activity.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { participants: { _id: id } } },
+                    { new: true }
+                );
+                return updatedActivity;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+        // removes participant/user from an activity
+        removeParticipant: async (parent, { id }, context) => {
+            if (context.user) {
+                const updatedActivity = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    // `pull` to remove user
+                    { $pull: { participants: { _id: id } } },
+                    { new: true }
+                );
+                return updatedActivity;
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
+        
+
+
     },
 };
 

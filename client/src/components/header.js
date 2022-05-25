@@ -36,6 +36,10 @@ export default function Header() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [openTwo, setOpenTwo] = React.useState(false);
+  const handleOpenTwo = () => setOpenTwo(true);
+  const handleCloseTwo = () => setOpenTwo(false);
+
 
 
 
@@ -48,32 +52,31 @@ export default function Header() {
             Let's Go!
           </Typography>
           <div>
-            <Button onClick={handleOpen} color="inherit">
+            <Button onClick={handleOpenTwo} color="inherit">
               Log In
             </Button>
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
-              open={open}
-              onClose={handleClose}
+              open={openTwo}
+              onClose={handleCloseTwo}
               closeAfterTransition
               BackdropComponent={Backdrop}
               BackdropProps={{
                 timeout: 500,
               }}
             >
-              <Fade in={open}>
+              <Fade in={openTwo}>
                 <Box sx={style}>
                   <Typography
                     id="transition-modal-title"
                     variant="h6"
                     component="h2"
                   >
-                    Text in a modal
+                    Login Modal 
                   </Typography>
                   <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor
-                    ligula.
+                    Input here
                   </Typography>
                 </Box>
               </Fade>
@@ -101,11 +104,10 @@ export default function Header() {
                     variant="h6"
                     component="h2"
                   >
-                    Text in a modal
+                    Sign Up Modal
                   </Typography>
                   <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor
-                    ligula.
+                    Test
                   </Typography>
                 </Box>
               </Fade>

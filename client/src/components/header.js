@@ -9,7 +9,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import { CREATE_USER } from "../utils/mutations";
+import { CREATE_USER, LOGIN_USER } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import Auth from "../utils/auth";
 
@@ -39,12 +39,22 @@ export default function Header() {
   const handleOpenTwo = () => setOpenTwo(true);
   const handleCloseTwo = () => setOpenTwo(false);
 
+  // state for signing up
   const [username, setUserName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const [createUser, { error }] = useMutation(CREATE_USER);
+  // state for logging in 
+  const [usernametwo, setUserNameTwo] = React.useState('');
+  const [emailtwo, setEmailTwo] = React.useState('');
+  const [passwordtwo, setPasswordTwo] = React.useState("");
 
+
+
+  const [createUser, { error }] = useMutation(CREATE_USER);
+  const [loginUser, ] = useMutation(LOGIN_USER);
+
+  // handling state change of sign up form
   let handleChange = e => {
     if (e.target.id === 'usernameID') {
       setUserName(e.target.value)
@@ -54,13 +64,61 @@ export default function Header() {
       setEmail(e.target.value)
     }
 
-
-
-    //  delete this
-    console.log(e);
-    console.log(e.target.value);
   };
 
+  // handling state change of login form
+  let handleLoginChange = e => {
+    if (e.target.id === 'loginUserID') {
+      setUserNameTwo(e.target.value)
+    } else if (e.target.id === 'loginPasswordID') {
+      setPasswordTwo(e.target.value)
+    }
+  };
+
+  let handleLoginSubmit = async e => {
+    e.preventDefault();
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    try {
+      // Spread `userFormData` into `loginUser` and return context data about the user for the subsequent login function
+      const { data } = await loginUser({
+        variables: {
+          username: username,
+          email: email,
+          password: password,
+        },
+      });
+      console.log(data);
+      console.log(data);
+
+      // Store the token to local storage. (`login` refers to the typesDefs mutation)
+      // Auth.login(data.login.token);
+    } catch (err) {
+      console.error(err);
+      // If error in login, then show alert
+    
+    }
+
+    // Reset login form data
+    setUserNameTwo({
+      username: "",
+    });
+    // setEmail({
+    //   email: "",
+    // });
+    setPasswordTwo({
+      password: "",
+    });
+  }
+
+
+  // this submit is ref to sign up button, 
   let handleSubmit = async e => {
     e.preventDefault();
 
@@ -75,6 +133,8 @@ export default function Header() {
       const { data } = await createUser({ variables: { username: username, email: email, password: password } });
       console.log(data);
       // Login
+
+      // todo try this to see if it creates a token
       // Auth.login(data.createUser.token);
 
     } catch (err) {
@@ -119,6 +179,7 @@ export default function Header() {
             Let's Go!
           </Typography>
 
+          {/* div hosting log in button, modal, and input fields */}
           <div>
             <Button onClick={handleOpenTwo} color="inherit">
               Log In
@@ -135,7 +196,7 @@ export default function Header() {
               }}
             >
               <Fade in={openTwo}>
-                <Box sx={style}>
+                <Box sx={style} onSubmit={handleLoginSubmit}>
                   <Stack
                     sx={{
                       display: "flex",
@@ -146,13 +207,19 @@ export default function Header() {
                     <h3>Welcome To Let's Go</h3>
                     <TextField
                       helperText="Please enter username or Email"
-                      id="demo-helper-text-misaligned"
+                      id="loginUserID"
                       label="Username or Email"
+                      value={usernametwo}
+                      onChange={handleLoginChange}
+                      required
                     />
                     <TextField
                       helperText="Please enter your Password"
-                      id="demo-helper-text-misaligned"
+                      id="loginPasswordID"
                       label="Password"
+                      value={passwordtwo}
+                      onChange={handleLoginChange}
+                      required
                     />
                     <Button variant="outlined">Log In</Button>
                   </Stack>
@@ -161,6 +228,7 @@ export default function Header() {
             </Modal>
           </div>
 
+          {/* div hosting sign up button, modal, and input fields */}
           <div>
             <Button onClick={handleOpen} color="inherit">
               Sign Up
@@ -188,7 +256,7 @@ export default function Header() {
                     <h3>Welcome To Let's Go</h3>
                     {/* username or email */}
                     <TextField
-                      helperText="Please enter username "
+                      helperText="Please select a username "
                       id="usernameID"
                       label="Username"
                       value={username}
@@ -197,7 +265,7 @@ export default function Header() {
                     />
 
                     <TextField
-                      helperText="Please Enter Email"
+                      helperText="Please enter an email"
                       id="emailID"
                       label="Email"
                       value={email}
@@ -206,7 +274,7 @@ export default function Header() {
                     />
                     {/* password */}
                     <TextField
-                      helperText="Please select a Password"
+                      helperText="Please select a password"
                       id="passwordID"
                       label="Password"
                       type="password"

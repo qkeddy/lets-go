@@ -7,9 +7,11 @@ import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Logo from '../images/Lets-Go-Logo.png'
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
+import { CREATE_USER } from "../utils/mutations";
+import { useMutation } from "@apollo/client";
+import Auth from "../utils/auth";
 
 const style = {
   position: 'absolute',
@@ -23,26 +25,76 @@ const style = {
   p: 4,
 };
 
-const styles = {
-  imageStyle: {
-    width: '3%',
-    flexWrap: 'wrap',
-  }
-};
 
 
 export default function Header() {
 
+  // sign up modal state
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // login modal state
   const [openTwo, setOpenTwo] = React.useState(false);
   const handleOpenTwo = () => setOpenTwo(true);
   const handleCloseTwo = () => setOpenTwo(false);
 
+  const [username, setUserName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const [createUser, { error }] = useMutation(CREATE_USER);
+
+  let handleChange = e => {
+    if (e.target.id === 'usernameID') {
+      setUserName(e.target.value)
+    } else if (e.target.id === 'passwordID') {
+      setPassword(e.target.value)
+    } else if (e.target.id === 'emailID') {
+      setEmail(e.target.value)
+    }
 
 
+
+    //  delete this
+    console.log(e);
+    console.log(e.target.value);
+  };
+
+  let handleSubmit = async e => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    try {
+      // Spread `userFormData` into `createUser` and return context data about the user for the subsequent login function
+      const { data } = await createUser({ variables: { username: username, email: email, password: password } });
+      console.log(data);
+      // Login
+      // Auth.login(data.createUser.token);
+
+    } catch (err) {
+      console.error(err);
+
+    }
+
+    // Reset login form data
+    setUserName({
+      username: "",
+
+    });
+    setEmail({
+      email: "",
+
+    });
+    setPassword({
+      password: "",
+    });
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -125,7 +177,7 @@ export default function Header() {
               }}
             >
               <Fade in={open}>
-                <Box sx={style}>
+                <Box sx={style} component="form" onSubmit={handleSubmit}>
                   <Stack
                     sx={{
                       display: "flex",
@@ -134,24 +186,40 @@ export default function Header() {
                     }}
                   >
                     <h3>Welcome To Let's Go</h3>
+                    {/* username or email */}
                     <TextField
-                      helperText="Please enter username or Email"
-                      id="demo-helper-text-misaligned"
-                      label="Username or Email"
+                      helperText="Please enter username "
+                      id="usernameID"
+                      label="Username"
+                      value={username}
+                      onChange={handleChange}
+                      required
                     />
+
+                    <TextField
+                      helperText="Please Enter Email"
+                      id="emailID"
+                      label="Email"
+                      value={email}
+                      onChange={handleChange}
+                      required
+                    />
+                    {/* password */}
                     <TextField
                       helperText="Please select a Password"
-                      id="demo-helper-text-misaligned"
+                      id="passwordID"
                       label="Password"
                       type="password"
+                      value={password}
+                      onChange={handleChange}
+                      required
                     />
-                    <TextField
-                      helperText="Please Confirm Password"
-                      id="demo-helper-text-misaligned"
-                      label="Confirm Password"
-                      type="password"
-                    />
-                    <Button variant="outlined">Sign Up</Button>
+
+                    <Button variant="outlined" type="submit">
+                      Sign Up
+                    </Button>
+
+                    {username}
                   </Stack>
                 </Box>
               </Fade>

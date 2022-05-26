@@ -39,7 +39,7 @@ Emailjs
 
 Below is a screenshot of the application homepage:
 
-<!-- ![photo of homepage](/public/images/.jpg) -->
+![photo of homepage](/client/src/images/Screenshot.jpg)
 
 ## Credits
 

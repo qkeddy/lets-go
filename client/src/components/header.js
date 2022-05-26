@@ -11,6 +11,8 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { CREATE_USER, LOGIN_USER } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
+import { Link } from "react-router-dom";
+
 import Auth from "../utils/auth";
 
 const style = {
@@ -52,7 +54,7 @@ export default function Header() {
 
 
   const [createUser, { error }] = useMutation(CREATE_USER);
-  const [loginUser, ] = useMutation(LOGIN_USER);
+  const [loginUser,] = useMutation(LOGIN_USER);
 
   // handling state change of sign up form
   let handleChange = e => {
@@ -98,11 +100,11 @@ export default function Header() {
       console.log(data);
 
       // Store the token to local storage. (`login` refers to the typesDefs mutation)
-      // Auth.login(data.login.token);
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       // If error in login, then show alert
-    
+
     }
 
     // Reset login form data
@@ -115,6 +117,11 @@ export default function Header() {
     setPasswordTwo({
       password: "",
     });
+
+
+
+
+
   }
 
 
@@ -135,7 +142,7 @@ export default function Header() {
       // Login
 
       // todo try this to see if it creates a token
-      // Auth.login(data.createUser.token);
+      Auth.login(data.createUser.token);
 
     } catch (err) {
       console.error(err);
@@ -181,9 +188,22 @@ export default function Header() {
 
           {/* div hosting log in button, modal, and input fields */}
           <div>
-            <Button onClick={handleOpenTwo} color="inherit">
-              Log In
-            </Button>
+            {!Auth.loggedIn() ? (
+              <Button onClick={handleOpenTwo} color="inherit">
+                Log In
+              </Button>
+            ) : (
+              ""
+            )}
+
+            {Auth.loggedIn() ? (
+              <Button onClick={Auth.logout} color="inherit">
+                Log Out
+              </Button>
+            ) : (
+              ""
+            )}
+
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
@@ -230,9 +250,15 @@ export default function Header() {
 
           {/* div hosting sign up button, modal, and input fields */}
           <div>
-            <Button onClick={handleOpen} color="inherit">
-              Sign Up
-            </Button>
+            {!Auth.loggedIn() ? (
+              <Button onClick={handleOpen} color="inherit">
+                Sign Up
+              </Button>
+            ) : (
+              ""
+            )}
+
+
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"

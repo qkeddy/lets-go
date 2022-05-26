@@ -53,7 +53,7 @@ export default function Header() {
 
 
 
-  const [createUser, { error: cError  }] = useMutation(CREATE_USER);
+  const [createUser, { error: cError }] = useMutation(CREATE_USER);
   const [loginUser, { error: lError }] = useMutation(LOGIN_USER);
 
   // handling state change of sign up form
@@ -102,7 +102,7 @@ export default function Header() {
           password: passwordtwo,
         },
       });
-     
+
       console.log(data);
 
       // Store the token to local storage. (`login` refers to the typesDefs mutation)
@@ -115,10 +115,13 @@ export default function Header() {
 
     // Reset login form data
     setUserNameTwo({
-      username: "",
+      usernametwo: "",
     });
+    // setEmail({
+    //   email: "",
+    // });
     setPasswordTwo({
-      password: "",
+      passwordtwo: "",
     });
 
 
@@ -138,20 +141,21 @@ export default function Header() {
       e.stopPropagation();
     }
 
-      console.log("here i am");
+    console.log("here i am");
 
-      console.log(username);
-      console.log(password);
-      console.log(email);
+    console.log(username);
+    console.log(password);
+    console.log(email);
 
     try {
       // Spread `userFormData` into `createUser` and return context data about the user for the subsequent login function
-      const { data } = await createUser({ variables: { 
-        username: username, 
-        email: email, 
-        password: password 
-      } 
-    });
+      const { data } = await createUser({
+        variables: {
+          username: username,
+          email: email,
+          password: password
+        }
+      });
       console.log(data);
       // Login
 
@@ -240,9 +244,9 @@ export default function Header() {
                   >
                     <h3>Welcome To Let's Go</h3>
                     <TextField
-                      helperText="Please enter username or Email"
+                      helperText="Please enter username"
                       id="loginUserID"
-                      label="Username or Email"
+                      label="Username"
                       value={usernametwo}
                       onChange={handleLoginChange}
                       required
@@ -260,7 +264,7 @@ export default function Header() {
 
                     <Button variant="outlined" type='submit'>
                       Log In
-                      </Button>
+                    </Button>
 
                   </Stack>
                 </Box>

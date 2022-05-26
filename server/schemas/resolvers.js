@@ -80,10 +80,11 @@ const resolvers = {
         // Add a friend to a user and return an updated user
         addFriend: async (parent, { friendId }, context) => {
             if (context.user) {
+                console.log(`Adding friend ${friendId} to user ${context.user._id}`);
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
                     // `addToSet` only adds to the array if it does not exist
-                    { $addToSet: { friends: { _id: friendId } } },
+                    { $addToSet: { friends: friendId } },
                     { new: true }
                 );
                 return updatedUser;
@@ -94,10 +95,11 @@ const resolvers = {
         // Remove a friend to a user and return an updated user
         removeFriend: async (parent, { friendId }, context) => {
             if (context.user) {
+                console.log(`Removing friend ${friendId} from user ${context.user._id}`);
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
                     // `addToSet` only adds to the array if it does not exist
-                    { $pull: { friends: { _id: friendId } } },
+                    { $pull: { friends: friendId } },
                     { new: true }
                 );
                 return updatedUser;
@@ -108,10 +110,18 @@ const resolvers = {
         // Add an activity to a user and return an updated user
         addActivity: async (parent, { activityId }, context) => {
             if (context.user) {
+                console.log(`Adding user ${context.user._id} to activity ${activityId}`);
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
                     // `addToSet` only adds to the array if it does not exist
-                    { $addToSet: { activities: { _id: activityId } } },
+                    { $addToSet: { activities: activityId } },
+                    { new: true }
+                );
+
+                await Activity.findOneAndUpdate(
+                    { _id: activityId },
+                    // `addToSet` only adds to the array if it does not exist
+                    { $addToSet: { participants: context.user._id } },
                     { new: true }
                 );
                 return updatedUser;
@@ -122,11 +132,19 @@ const resolvers = {
         // Remove an activity to a user and return an updated user
         removeActivity: async (parent, { activityId }, context) => {
             if (context.user) {
+                console.log(`Removing user ${context.user._id} from activity ${activityId}`);
                 const updatedUser = await User.findOneAndUpdate(
                     // Equivalent to a where clause in SQL
                     { _id: context.user._id },
-                    // `addToSet` only adds to the array if it does not exist
-                    { $pull: { activities: { _id: activityId } } },
+                    // `pull` only adds to the array if it does not exist
+                    { $pull: { activities: activityId } },
+                    { new: true }
+                );
+
+                await Activity.findOneAndUpdate(
+                    { _id: activityId },
+                    // `pull` to remove user
+                    { $pull: { participants: context.user._id } },
                     { new: true }
                 );
                 return updatedUser;
@@ -143,17 +161,18 @@ const resolvers = {
         // Adds the participant/user to an activity
         addParticipant: async (parent, { activityId }, context) => {
             if (context.user) {
+                console.log(`Adding user ${context.user._id} to activity ${activityId}`);
                 const updatedActivity = await Activity.findOneAndUpdate(
                     { _id: activityId },
                     // `addToSet` only adds to the array if it does not exist
-                    { $addToSet: { participants: { _id: context.user._id } } },
+                    { $addToSet: { participants: context.user._id } },
                     { new: true }
                 );
 
                 await User.findOneAndUpdate(
                     { _id: context.user._id },
                     // `addToSet` only adds to the array if it does not exist
-                    { $addToSet: { activities: { _id: activityId } } },
+                    { $addToSet: { activities: activityId } },
                     { new: true }
                 );
 
@@ -165,18 +184,18 @@ const resolvers = {
         // removes participant/user from an activity
         removeParticipant: async (parent, { activityId }, context) => {
             if (context.user) {
-                console.log(`Removing user ${context.user._id} from ${activityId}`);
+                console.log(`Removing user ${context.user._id} from activity  ${activityId}`);
                 const updatedActivity = await Activity.findOneAndUpdate(
                     { _id: activityId },
                     // `pull` to remove user
-                    { $pull: { participants: { _id: context.user._id } } },
+                    { $pull: { participants: context.user._id } },
                     { new: true }
                 );
 
                 await User.findOneAndUpdate(
                     { _id: context.user._id },
                     // `pull` only adds to the array if it does not exist
-                    { $pull: { activities: { _id: activityId } } },
+                    { $pull: { activities: activityId } },
                     { new: true }
                 );
 

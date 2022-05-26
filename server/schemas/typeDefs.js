@@ -24,6 +24,7 @@ const typeDefs = gql`
         _id: ID!
         name: String!
         location: String!
+        city: String!
         lng: Int
         lat: Int
         description: String!
@@ -39,6 +40,9 @@ const typeDefs = gql`
 
         # Supports query of one or multiple activities
         activities(_id: String): [Activity]
+
+        # Supports query of one or multiple activities
+        activitiesByActivityCity(activity: String!, city: String!): [Activity]
     }
 
     type Mutation {

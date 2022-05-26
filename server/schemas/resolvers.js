@@ -34,6 +34,15 @@ const resolvers = {
             }
             throw new AuthenticationError("You need to be logged in to use this feature.");
         },
+
+        // Get the profile of the logged in user and populate savedBooks
+        activitiesByActivityCity: async (parent, { activity, city }, context) => {
+            if (context.user) {
+                const params = { activity, city };
+                return await Activity.find(params);
+            }
+            throw new AuthenticationError("You need to be logged in to use this feature.");
+        },
     },
 
     Mutation: {
@@ -153,8 +162,8 @@ const resolvers = {
         },
 
         // Creates a new activity and returns the activity object
-        createActivity: async (parent, { name, location, lng, lat, description }) => {
-            const activity = await Activity.create({ name, location, lng, lat, description });
+        createActivity: async (parent, { name, location, city, lng, lat, description }) => {
+            const activity = await Activity.create({ name, location, lng, lat, city, description });
             return activity;
         },
 

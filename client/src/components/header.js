@@ -53,8 +53,8 @@ export default function Header() {
 
 
 
-  const [createUser] = useMutation(CREATE_USER);
-  const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const [createUser, { error: cError  }] = useMutation(CREATE_USER);
+  const [loginUser, { error: lError }] = useMutation(LOGIN_USER);
 
   // handling state change of sign up form
   let handleChange = e => {
@@ -76,6 +76,7 @@ export default function Header() {
       setPasswordTwo(e.target.value)
     }
     console.log(e.target.value);
+    console.log(e.target.id);
   };
 
   let handleLoginSubmit = async e => {
@@ -92,14 +93,13 @@ export default function Header() {
       // Spread `userFormData` into `loginUser` and return context data about the user for the subsequent login function
       console.log('here i am');
 
-      console.log(username);
-      console.log(password);
-      console.log(email);
+      console.log(usernametwo);
+      console.log(passwordtwo);
 
       const { data } = await loginUser({
         variables: {
-          username: username,
-          password: password,
+          username: usernametwo,
+          password: passwordtwo,
         },
       });
      
@@ -137,7 +137,7 @@ export default function Header() {
       e.preventDefault();
       e.stopPropagation();
     }
-    
+
       console.log("here i am");
 
       console.log(username);

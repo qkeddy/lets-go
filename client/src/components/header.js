@@ -48,13 +48,13 @@ export default function Header() {
 
   // state for logging in 
   const [usernametwo, setUserNameTwo] = React.useState('');
-  const [emailtwo, setEmailTwo] = React.useState('');
+  // const [emailtwo, setEmailTwo] = React.useState('');
   const [passwordtwo, setPasswordTwo] = React.useState("");
 
 
 
-  const [createUser, { error }] = useMutation(CREATE_USER);
-  const [loginUser,] = useMutation(LOGIN_USER);
+  const [createUser] = useMutation(CREATE_USER);
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   // handling state change of sign up form
   let handleChange = e => {
@@ -75,6 +75,7 @@ export default function Header() {
     } else if (e.target.id === 'loginPasswordID') {
       setPasswordTwo(e.target.value)
     }
+    console.log(e.target.value);
   };
 
   let handleLoginSubmit = async e => {
@@ -89,14 +90,19 @@ export default function Header() {
 
     try {
       // Spread `userFormData` into `loginUser` and return context data about the user for the subsequent login function
+      console.log('here i am');
+
+      console.log(username);
+      console.log(password);
+      console.log(email);
+
       const { data } = await loginUser({
         variables: {
           username: username,
-          email: email,
           password: password,
         },
       });
-      console.log(data);
+     
       console.log(data);
 
       // Store the token to local storage. (`login` refers to the typesDefs mutation)
@@ -111,9 +117,6 @@ export default function Header() {
     setUserNameTwo({
       username: "",
     });
-    // setEmail({
-    //   email: "",
-    // });
     setPasswordTwo({
       password: "",
     });
@@ -134,10 +137,21 @@ export default function Header() {
       e.preventDefault();
       e.stopPropagation();
     }
+    
+      console.log("here i am");
+
+      console.log(username);
+      console.log(password);
+      console.log(email);
 
     try {
       // Spread `userFormData` into `createUser` and return context data about the user for the subsequent login function
-      const { data } = await createUser({ variables: { username: username, email: email, password: password } });
+      const { data } = await createUser({ variables: { 
+        username: username, 
+        email: email, 
+        password: password 
+      } 
+    });
       console.log(data);
       // Login
 
@@ -216,7 +230,7 @@ export default function Header() {
               }}
             >
               <Fade in={openTwo}>
-                <Box sx={style} onSubmit={handleLoginSubmit}>
+                <Box sx={style} component="form" onSubmit={handleLoginSubmit}>
                   <Stack
                     sx={{
                       display: "flex",
@@ -233,6 +247,7 @@ export default function Header() {
                       onChange={handleLoginChange}
                       required
                     />
+
                     <TextField
                       helperText="Please enter your Password"
                       id="loginPasswordID"
@@ -241,7 +256,12 @@ export default function Header() {
                       onChange={handleLoginChange}
                       required
                     />
-                    <Button variant="outlined">Log In</Button>
+
+
+                    <Button variant="outlined" type='submit'>
+                      Log In
+                      </Button>
+
                   </Stack>
                 </Box>
               </Fade>

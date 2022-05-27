@@ -25,9 +25,9 @@ import './footer.css'
 
 const styles = {
   footerStyle: {
-    background: '#993399',
+    background: 'transparent',
     justifyContent: 'flex-wrap',
-    width: '7vw',
+    width: '8vw',
     position: 'fixed',
     bottom: '0',
     margin: '0px',

@@ -240,12 +240,14 @@ export default function Home() {
               return (
                 <Card
                   sx={{
-                    // border: "10px solid black",
+                    border: "2px solid black",
                     width: "25%",
                     display: "flex",
+                    flexWrap: 'wrap',
+                    flexDirection: 'row',
                     justifyContent:'center',
-                    alignContent:'center'
-                    
+                    alignContent:'center',
+                    margin: '5px'
                   }}
                 >
                   <CardContent>

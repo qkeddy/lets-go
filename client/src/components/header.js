@@ -200,7 +200,7 @@ export default function Header() {
             </g>
           </svg>
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component={Link} to='/' sx={{ flexGrow: 1 }}>
             Let's Go!
           </Typography>
 
@@ -255,6 +255,7 @@ export default function Header() {
                     <TextField
                       helperText="Please enter your Password"
                       id="loginPasswordID"
+                      type="password"
                       label="Password"
                       value={passwordtwo}
                       onChange={handleLoginChange}

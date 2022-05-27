@@ -9,8 +9,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import { CREATE_USER, LOGIN_USER } from "../utils/mutations";
-import { useMutation } from "@apollo/client";
+import { CREATE_USER, LOGIN_USER, } from "../utils/mutations";
+import { useMutation, } from "@apollo/client";
 import { Link } from "react-router-dom";
 
 import Auth from "../utils/auth";

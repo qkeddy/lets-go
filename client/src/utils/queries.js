@@ -1,18 +1,21 @@
 import { gql } from "@apollo/client";
 
-export const GET_ME = gql`
-  query me {
-    me {
+
+export const ACTIVITY_CITY = gql`
+  query activitiesByActivityCity($activity: String!, $city: String!) { 
+    activitiesByActivityCity(activity: $activity, city: $city) {
       _id
-      username
-      email
-      savedBooks {
-        bookId
-        authors
-        description
-        image
-        link
-        title
+      name
+      location
+      city
+      lng
+      lat
+      description
+      participants {
+        _id
+        username
+        email
+        shortBio
       }
     }
   }

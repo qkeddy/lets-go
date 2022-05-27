@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import TextField from '@mui/material/TextField';
+import { makeStyles } from "@material-ui/core/styles"
 import './contactSupport.css'
 
 
@@ -29,20 +30,37 @@ export default function Contact() {
             });
     };
 
-    return (
 
+    // npm install @material-ui/core --save
+    const useStyles = makeStyles((theme) => ({
+        root: {
+          "& .MuiFilledInput-root": {
+            background: "rgb(232, 241, 250)"
+          }
+        }
+      }));
+
+      const classes = useStyles();
+
+    return (
+        
         <form ref={form} onSubmit={sendEmail}>
             <div className='formContainer'>
                 <h1 className='inputs'>Contact Us</h1>
                 <div className='inputsOne'>
-                    <TextField id="filled-basic" label="Name" variant="filled" name='name' />
-                    <TextField id="filled-basic" label="Email" variant="filled" name='email' />
+                    <TextField className={classes.root} id="filled-basic" label="Name" variant="filled" name='name' />
+                    </div>
+                    <br/>
+                    <div className='inputsOne'>
+                    <TextField className={classes.root} id="filled-basic" label="Email" variant="filled" name='email' />
                 </div>
                 <div className='inputs'>
                     <TextField
+                        className={classes.root}
                         id="filled-multiline-static"
                         label="Message"
                         multiline
+                        style = {{width: 350}}
                         rows={6}
                         placeholder="Message"
                         variant="filled"

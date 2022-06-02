@@ -11,28 +11,6 @@
 ## Queries
 
 ```
-##########################
-# ACCESS & USER MANAGEMENT
-##########################
-mutation CreateUser($createUserUsername2: String!, $email: String!, $createUserPassword2: String!) {
-  createUser(username: $createUserUsername2, email: $email, password: $createUserPassword2) {
-    token
-    user {
-      username
-    }
-  }
-}
-
-mutation Login($password: String!, $username: String) {
-  login(password: $password, username: $username) {
-    token
-    user {
-      username
-      _id
-    }
-  }
-}
-
 query Users {
   users {
     _id
@@ -67,6 +45,48 @@ query Me {
 ## Mutations
 
 Below are the relevant mutations for `Friends` and `Activities`
+
+```
+##########################
+# ACCESS & USER MANAGEMENT
+##########################
+mutation CreateUser($createUserUsername2: String!, $email: String!, $createUserPassword2: String!) {
+  createUser(username: $createUserUsername2, email: $email, password: $createUserPassword2) {
+    token
+    user {
+      username
+    }
+  }
+}
+
+mutation Login($password: String!, $username: String) {
+  login(password: $password, username: $username) {
+    token
+    user {
+      username
+      _id
+    }
+  }
+}
+
+````
+### Variables
+Below are the variables used for the `CreateUser` and `Login` mutations above. 
+```
+{
+  "password": "password",
+  "username": "qkeddy",
+  "createUserUsername2": "qkeddy",
+  "email": "qkeddy@gmail.com",
+  "createUserPassword2": "password"
+}
+```
+
+
+-----
+
+-----
+
 
 ```
 ##########################
@@ -112,5 +132,17 @@ mutation RemoveParticipant($activityId: ID!) {
     name
     participants
   }
+}
+```
+### Variables
+Below are the variables used for the `Friends` and `Activities` mutations above. 
+```
+{
+  "activityId": "6298fab17bef1c77241ed804",
+  "name": "Park Run",
+  "location": "Philadelphia",
+  "city": "Philadelphia",
+  "description": "Lets run central park!",
+  "friendId": "628d40e059ca8c34f51c1843",
 }
 ```

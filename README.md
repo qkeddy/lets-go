@@ -52,7 +52,7 @@ https://github.com/CallMeIce
 Julian Richardson:
 https://github.com/julianr3
 
-Quinn Eddy:
+Quin Eddy:
 https://github.com/qkeddy
 
 ## License

@@ -68,7 +68,7 @@ const typeDefs = gql`
         removeActivity(activityId: ID!): User
 
         # Create an activity
-        createActivity(name: String!, location: String!, lng: Int, lat: Int, description: String!): Activity
+        createActivity(name: String!, location: String!, city: String!, lng: Int, lat: Int, description: String!): Activity
 
         # Add an participant to an activity
         addParticipant(activityId: ID!): Activity

@@ -1,14 +1,21 @@
 import React from "react";
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/homePage";
-import Footer from "./components/footer.js";
-import Header from "./components/header.js";
-import Support from "./components/contactSupport";
 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Import the Apollo client wrapper
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
+
+// Import pages and components 
 import SearchActivities from "./pages/SearchActivities";
 import ProfilePage from "./pages/ProfilePage";
+import ContactSupport from "./pages/ContactSupport";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer.js";
+
+// TODO - Remove after refactor is complete
+import Home from "./components/homePage";
+
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -40,11 +47,11 @@ export default function App() {
         <ApolloProvider client={client}>
             <Router>
                 <>
-                    <Header />
+                    <Navbar />
                     <Routes>
                         <Route path="/" element={<SearchActivities />} />
                         <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/support" element={<Support />} />
+                        <Route path="/support" element={<ContactSupport />} />
                         <Route path="*" element={<h1 className="display-2">Wrong page!</h1>} />
 
                         <Route path="/old-home" element={<Home />} />

@@ -15,6 +15,9 @@ import { Link } from "react-router-dom";
 
 import Auth from "../utils/auth";
 
+import SignupForm from './SignupForm';
+import LoginForm from './LoginForm';
+
 const style = {
     position: "absolute",
     top: "50%",
@@ -29,50 +32,54 @@ const style = {
 
 export default function Header() {
     // sign up modal state
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [open, setOpenSignUp] = React.useState(false);
+    const handleOpenSignUp = () => setOpenSignUp(true);
+    const handleCloseSignUp = () => setOpenSignUp(false);
 
     // login modal state
-    const [openTwo, setOpenTwo] = React.useState(false);
-    const handleOpenTwo = () => setOpenTwo(true);
-    const handleCloseTwo = () => setOpenTwo(false);
+    const [openTwo, setOpenLogin] = React.useState(false);
+    const handleOpenLogin = () => setOpenLogin(true);
+    const handleCloseLogin = () => setOpenLogin(false);
 
     // state for signing up
-    const [username, setUserName] = React.useState("");
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
+    const [usernameSignUp, setUserNameSignUp] = React.useState("");
+    const [emailSignUp, setEmailSignUp] = React.useState("");
+    const [passwordSignUp, setPasswordSignUp] = React.useState("");
 
     // state for logging in
-    const [usernametwo, setUserNameTwo] = React.useState("");
+    const [usernameLogin, setUserNameLogin] = React.useState("");
     // const [emailtwo, setEmailTwo] = React.useState('');
-    const [passwordtwo, setPasswordTwo] = React.useState("");
+    const [passwordLogin, setPasswordLogin] = React.useState("");
 
+    // TODO Move the mutations to the correct location
     const [createUser, { error: cError }] = useMutation(CREATE_USER);
     const [loginUser, { error: lError }] = useMutation(LOGIN_USER);
 
+    // TODO Move the State Change to SignupForm.js
     // handling state change of sign up form
     let handleChange = (e) => {
         if (e.target.id === "usernameID") {
-            setUserName(e.target.value);
+            setUserNameSignUp(e.target.value);
         } else if (e.target.id === "passwordID") {
-            setPassword(e.target.value);
+            setPasswordSignUp(e.target.value);
         } else if (e.target.id === "emailID") {
-            setEmail(e.target.value);
+            setEmailSignUp(e.target.value);
         }
     };
 
+    // TODO Move the State Change to LoginForm.js
     // handling state change of login form
     let handleLoginChange = (e) => {
         if (e.target.id === "loginUserID") {
-            setUserNameTwo(e.target.value);
+            setUserNameLogin(e.target.value);
         } else if (e.target.id === "loginPasswordID") {
-            setPasswordTwo(e.target.value);
+            setPasswordLogin(e.target.value);
         }
         console.log(e.target.value);
         console.log(e.target.id);
     };
 
+    // TODO Move to LoginForm.js
     let handleLoginSubmit = async (e) => {
         e.preventDefault();
 
@@ -87,13 +94,13 @@ export default function Header() {
             // Spread `userFormData` into `loginUser` and return context data about the user for the subsequent login function
             console.log("here i am");
 
-            console.log(usernametwo);
-            console.log(passwordtwo);
+            console.log(usernameLogin);
+            console.log(passwordLogin);
 
             const { data } = await loginUser({
                 variables: {
-                    username: usernametwo,
-                    password: passwordtwo,
+                    username: usernameLogin,
+                    password: passwordLogin,
                 },
             });
 
@@ -107,17 +114,18 @@ export default function Header() {
         }
 
         // Reset login form data
-        setUserNameTwo({
+        setUserNameLogin({
             usernametwo: "",
         });
         // setEmail({
         //   email: "",
         // });
-        setPasswordTwo({
+        setPasswordLogin({
             passwordtwo: "",
         });
     };
 
+    // TODO Move to SignupForm.js
     // this submit is ref to sign up button,
     let handleSubmit = async (e) => {
         e.preventDefault();
@@ -130,17 +138,17 @@ export default function Header() {
 
         console.log("here i am");
 
-        console.log(username);
-        console.log(password);
-        console.log(email);
+        console.log(usernameSignUp);
+        console.log(passwordSignUp);
+        console.log(emailSignUp);
 
         try {
             // Spread `userFormData` into `createUser` and return context data about the user for the subsequent login function
             const { data } = await createUser({
                 variables: {
-                    username: username,
-                    email: email,
-                    password: password,
+                    username: usernameSignUp,
+                    email: emailSignUp,
+                    password: passwordSignUp,
                 },
             });
             console.log(data);
@@ -153,13 +161,13 @@ export default function Header() {
         }
 
         // Reset login form data
-        setUserName({
+        setUserNameSignUp({
             username: "",
         });
-        setEmail({
+        setEmailSignUp({
             email: "",
         });
-        setPassword({
+        setPasswordSignUp({
             password: "",
         });
     };
@@ -183,7 +191,7 @@ export default function Header() {
                     {/* div hosting log in button, modal, and input fields */}
                     <div>
                         {!Auth.loggedIn() ? (
-                            <Button onClick={handleOpenTwo} color="inherit">
+                            <Button onClick={handleOpenLogin} color="inherit">
                                 Log In
                             </Button>
                         ) : (
@@ -202,7 +210,7 @@ export default function Header() {
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"
                             open={openTwo}
-                            onClose={handleCloseTwo}
+                            onClose={handleCloseLogin}
                             closeAfterTransition
                             BackdropComponent={Backdrop}
                             BackdropProps={{
@@ -219,9 +227,9 @@ export default function Header() {
                                         }}
                                     >
                                         <h3>Welcome To Let's Go</h3>
-                                        <TextField helperText="Please enter username" id="loginUserID" label="Username" value={usernametwo} onChange={handleLoginChange} required />
+                                        <TextField helperText="Please enter username" id="loginUserID" label="Username" value={usernameLogin} onChange={handleLoginChange} required />
 
-                                        <TextField helperText="Please enter your Password" id="loginPasswordID" type="password" label="Password" value={passwordtwo} onChange={handleLoginChange} required />
+                                        <TextField helperText="Please enter your Password" id="loginPasswordID" type="password" label="Password" value={passwordLogin} onChange={handleLoginChange} required />
 
                                         <Button variant="outlined" type="submit">
                                             Log In
@@ -235,7 +243,7 @@ export default function Header() {
                     {/* div hosting sign up button, modal, and input fields */}
                     <div>
                         {!Auth.loggedIn() ? (
-                            <Button onClick={handleOpen} color="inherit">
+                            <Button onClick={handleOpenSignUp} color="inherit">
                                 Sign Up
                             </Button>
                         ) : (
@@ -246,7 +254,7 @@ export default function Header() {
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"
                             open={open}
-                            onClose={handleClose}
+                            onClose={handleCloseSignUp}
                             closeAfterTransition
                             BackdropComponent={Backdrop}
                             BackdropProps={{
@@ -264,17 +272,17 @@ export default function Header() {
                                     >
                                         <h3>Welcome To Let's Go</h3>
                                         {/* username or email */}
-                                        <TextField helperText="Please select a username " id="usernameID" label="Username" value={username} onChange={handleChange} required />
+                                        <TextField helperText="Please select a username " id="usernameID" label="Username" value={usernameSignUp} onChange={handleChange} required />
 
-                                        <TextField helperText="Please enter an email" id="emailID" label="Email" value={email} onChange={handleChange} required />
+                                        <TextField helperText="Please enter an email" id="emailID" label="Email" value={emailSignUp} onChange={handleChange} required />
                                         {/* password */}
-                                        <TextField helperText="Please select a password" id="passwordID" label="Password" type="password" value={password} onChange={handleChange} required />
+                                        <TextField helperText="Please select a password" id="passwordID" label="Password" type="password" value={passwordSignUp} onChange={handleChange} required />
 
                                         <Button variant="outlined" type="submit">
                                             Sign Up
                                         </Button>
 
-                                        {username}
+                                        {usernameSignUp}
                                     </Stack>
                                 </Box>
                             </Fade>

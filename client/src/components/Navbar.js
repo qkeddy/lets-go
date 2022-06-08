@@ -1,4 +1,8 @@
-import * as React from "react";
+// Import React framework components
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
+// Import Material UI components
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -6,171 +10,22 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import { CREATE_USER, LOGIN_USER } from "../utils/mutations";
-import { useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
 
+// Import components
+import SignupForm from "./SignupForm";
+import LoginForm from "./LoginForm";
 import Auth from "../utils/auth";
 
-import SignupForm from './SignupForm';
-import LoginForm from './LoginForm';
 
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-};
-
-export default function Header() {
+export default function Navbar() {
     // sign up modal state
-    const [open, setOpenSignUp] = React.useState(false);
-    const handleOpenSignUp = () => setOpenSignUp(true);
-    const handleCloseSignUp = () => setOpenSignUp(false);
+    const [openSignUp, setOpenSignUp] = useState(false);
 
     // login modal state
-    const [openTwo, setOpenLogin] = React.useState(false);
-    const handleOpenLogin = () => setOpenLogin(true);
-    const handleCloseLogin = () => setOpenLogin(false);
+    const [openLogin, setOpenLogin] = useState(false);
 
-    // state for signing up
-    const [usernameSignUp, setUserNameSignUp] = React.useState("");
-    const [emailSignUp, setEmailSignUp] = React.useState("");
-    const [passwordSignUp, setPasswordSignUp] = React.useState("");
-
-    // state for logging in
-    const [usernameLogin, setUserNameLogin] = React.useState("");
-    // const [emailtwo, setEmailTwo] = React.useState('');
-    const [passwordLogin, setPasswordLogin] = React.useState("");
-
-    // TODO Move the mutations to the correct location
-    const [createUser, { error: cError }] = useMutation(CREATE_USER);
-    const [loginUser, { error: lError }] = useMutation(LOGIN_USER);
-
-    // TODO Move the State Change to SignupForm.js
-    // handling state change of sign up form
-    let handleChange = (e) => {
-        if (e.target.id === "usernameID") {
-            setUserNameSignUp(e.target.value);
-        } else if (e.target.id === "passwordID") {
-            setPasswordSignUp(e.target.value);
-        } else if (e.target.id === "emailID") {
-            setEmailSignUp(e.target.value);
-        }
-    };
-
-    // TODO Move the State Change to LoginForm.js
-    // handling state change of login form
-    let handleLoginChange = (e) => {
-        if (e.target.id === "loginUserID") {
-            setUserNameLogin(e.target.value);
-        } else if (e.target.id === "loginPasswordID") {
-            setPasswordLogin(e.target.value);
-        }
-        console.log(e.target.value);
-        console.log(e.target.id);
-    };
-
-    // TODO Move to LoginForm.js
-    let handleLoginSubmit = async (e) => {
-        e.preventDefault();
-
-        // check if form has everything (as per react-bootstrap docs)
-        const form = e.currentTarget;
-        if (form.checkValidity() === false) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        try {
-            // Spread `userFormData` into `loginUser` and return context data about the user for the subsequent login function
-            console.log("here i am");
-
-            console.log(usernameLogin);
-            console.log(passwordLogin);
-
-            const { data } = await loginUser({
-                variables: {
-                    username: usernameLogin,
-                    password: passwordLogin,
-                },
-            });
-
-            console.log(data);
-
-            // Store the token to local storage. (`login` refers to the typesDefs mutation)
-            Auth.login(data.login.token);
-        } catch (err) {
-            console.error(err);
-            // If error in login, then show alert
-        }
-
-        // Reset login form data
-        setUserNameLogin({
-            usernametwo: "",
-        });
-        // setEmail({
-        //   email: "",
-        // });
-        setPasswordLogin({
-            passwordtwo: "",
-        });
-    };
-
-    // TODO Move to SignupForm.js
-    // this submit is ref to sign up button,
-    let handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const form = e.currentTarget;
-        if (form.checkValidity() === false) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        console.log("here i am");
-
-        console.log(usernameSignUp);
-        console.log(passwordSignUp);
-        console.log(emailSignUp);
-
-        try {
-            // Spread `userFormData` into `createUser` and return context data about the user for the subsequent login function
-            const { data } = await createUser({
-                variables: {
-                    username: usernameSignUp,
-                    email: emailSignUp,
-                    password: passwordSignUp,
-                },
-            });
-            console.log(data);
-            // Login
-
-            // todo try this to see if it creates a token
-            Auth.login(data.createUser.token);
-        } catch (err) {
-            console.error(err);
-        }
-
-        // Reset login form data
-        setUserNameSignUp({
-            username: "",
-        });
-        setEmailSignUp({
-            email: "",
-        });
-        setPasswordSignUp({
-            password: "",
-        });
-    };
+    // set modal display state
+    const [showModal, setShowModal] = useState(false);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -191,7 +46,7 @@ export default function Header() {
                     {/* div hosting log in button, modal, and input fields */}
                     <div>
                         {!Auth.loggedIn() ? (
-                            <Button onClick={handleOpenLogin} color="inherit">
+                            <Button onClick={() => setOpenLogin(true)} color="inherit">
                                 Log In
                             </Button>
                         ) : (
@@ -206,44 +61,27 @@ export default function Header() {
                             ""
                         )}
 
+                        {console.log(openLogin)}
+
                         <Modal
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"
-                            open={openTwo}
-                            onClose={handleCloseLogin}
+                            open={openLogin}
+                            onClose={() => setOpenLogin(false)}
                             closeAfterTransition
                             BackdropComponent={Backdrop}
                             BackdropProps={{
                                 timeout: 500,
                             }}
                         >
-                            <Fade in={openTwo}>
-                                <Box sx={style} component="form" onSubmit={handleLoginSubmit}>
-                                    <Stack
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            "& > :not(style)": { m: 1 },
-                                        }}
-                                    >
-                                        <h3>Welcome To Let's Go</h3>
-                                        <TextField helperText="Please enter username" id="loginUserID" label="Username" value={usernameLogin} onChange={handleLoginChange} required />
-
-                                        <TextField helperText="Please enter your Password" id="loginPasswordID" type="password" label="Password" value={passwordLogin} onChange={handleLoginChange} required />
-
-                                        <Button variant="outlined" type="submit">
-                                            Log In
-                                        </Button>
-                                    </Stack>
-                                </Box>
-                            </Fade>
+                            <LoginForm />
                         </Modal>
                     </div>
 
                     {/* div hosting sign up button, modal, and input fields */}
                     <div>
                         {!Auth.loggedIn() ? (
-                            <Button onClick={handleOpenSignUp} color="inherit">
+                            <Button onClick={() => setOpenSignUp(true)} color="inherit">
                                 Sign Up
                             </Button>
                         ) : (
@@ -253,39 +91,15 @@ export default function Header() {
                         <Modal
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"
-                            open={open}
-                            onClose={handleCloseSignUp}
+                            open={openSignUp}
+                            onClose={() => setOpenSignUp(false)}
                             closeAfterTransition
                             BackdropComponent={Backdrop}
                             BackdropProps={{
                                 timeout: 500,
                             }}
                         >
-                            <Fade in={open}>
-                                <Box sx={style} component="form" onSubmit={handleSubmit}>
-                                    <Stack
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            "& > :not(style)": { m: 1 },
-                                        }}
-                                    >
-                                        <h3>Welcome To Let's Go</h3>
-                                        {/* username or email */}
-                                        <TextField helperText="Please select a username " id="usernameID" label="Username" value={usernameSignUp} onChange={handleChange} required />
-
-                                        <TextField helperText="Please enter an email" id="emailID" label="Email" value={emailSignUp} onChange={handleChange} required />
-                                        {/* password */}
-                                        <TextField helperText="Please select a password" id="passwordID" label="Password" type="password" value={passwordSignUp} onChange={handleChange} required />
-
-                                        <Button variant="outlined" type="submit">
-                                            Sign Up
-                                        </Button>
-
-                                        {usernameSignUp}
-                                    </Stack>
-                                </Box>
-                            </Fade>
+                            <SignupForm />
                         </Modal>
                     </div>
                 </Toolbar>

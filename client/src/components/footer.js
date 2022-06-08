@@ -36,7 +36,7 @@ const styles = {
   },
 };
 
-
+// imported "LabelBottomNavigation" to App.js page line 14
 export default function LabelBottomNavigation() {
   const [value, setValue] = React.useState('recents');
 

@@ -11,7 +11,8 @@ import SearchActivities from "./pages/SearchActivities";
 import ProfilePage from "./pages/ProfilePage";
 import ContactSupport from "./pages/ContactSupport";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer.js";
+// Changed import of "footer" to new component function name of "LabelBottomNavigation"
+import LabelBottomNavigation from "./components/footer.js";
 
 // TODO - Remove after refactor is complete
 import Home from "./components/homePage";
@@ -43,22 +44,23 @@ const client = new ApolloClient({
 
 export default function App() {
     return (
-        // Wrap everything in the ApolloProvider and client being passed in a `props`
-        <ApolloProvider client={client}>
-            <Router>
-                <>
-                    <Navbar />
-                    <Routes>
-                        <Route path="/" element={<SearchActivities />} />
-                        {/* <Route path="/profile" element={<ProfilePage />} /> */}
-                        {/* <Route path="/support" element={<ContactSupport />} /> */}
-                        {/* <Route path="*" element={<h1 className="display-2">Wrong page!</h1>} /> */}
+      // Wrap everything in the ApolloProvider and client being passed in a `props`
+      <ApolloProvider client={client}>
+        <Router>
+          <>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<SearchActivities />} />
+              {/* <Route path="/profile" element={<ProfilePage />} /> */}
+              {/* <Route path="/support" element={<ContactSupport />} /> */}
+              {/* <Route path="*" element={<h1 className="display-2">Wrong page!</h1>} /> */}
 
-                        {/* <Route path="/old-home" element={<Home />} /> */}
-                    </Routes>
-                    <Footer />
-                </>
-            </Router>
-        </ApolloProvider>
+              {/* <Route path="/old-home" element={<Home />} /> */}
+            </Routes>
+            {/* changed component name from footer to LabelBottomNavigation */}
+            <LabelBottomNavigation />
+          </>
+        </Router>
+      </ApolloProvider>
     );
 }

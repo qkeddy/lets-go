@@ -17,7 +17,7 @@ import LoginForm from "./LoginForm";
 import Auth from "../utils/auth";
 
 
-export default function Navbar() {
+const  Navbar = () => {
     // sign up modal state
     const [openSignUp, setOpenSignUp] = useState(false);
 
@@ -107,3 +107,5 @@ export default function Navbar() {
         </Box>
     );
 }
+
+export default Navbar

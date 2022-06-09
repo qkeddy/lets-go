@@ -11,8 +11,7 @@ import SearchActivities from "./pages/SearchActivities";
 import ProfilePage from "./pages/ProfilePage";
 import ContactSupport from "./pages/ContactSupport";
 import Navbar from "./components/Navbar";
-// Changed import of "footer" to new component function name of "LabelBottomNavigation"
-import LabelBottomNavigation from "./components/footer.js";
+import Footer from "./components/Footer.js";
 
 // TODO - Remove after refactor is complete
 import Home from "./components/homePage";
@@ -58,7 +57,7 @@ export default function App() {
               {/* <Route path="/old-home" element={<Home />} /> */}
             </Routes>
             {/* changed component name from footer to LabelBottomNavigation */}
-            <LabelBottomNavigation />
+            <Footer />
           </>
         </Router>
       </ApolloProvider>

@@ -10,7 +10,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useMutation, useLazyQuery } from "@apollo/client";
+import { useMutation, useLazyQuery, gql } from "@apollo/client";
 import { ACTIVITY_CITY } from '../utils/queries'
 // import { ADD_ACTIVITY } from "../utils/mutations";
 
@@ -91,12 +91,12 @@ export default function Home() {
 
   const [searchedEvents, setSearchedEvents] = React.useState('')
   const [searchedLocation, setSearchedLocation] = React.useState('')
-  const [activitiesByActivityCity, { called, data, loading}] = useLazyQuery(ACTIVITY_CITY);
-  const [clicked, setClicked] = React.useState(false) 
+  const [gql, setGql] = React.useState([])
+
+  const [activitiesByActivityCity, { called, data, loading }] = useLazyQuery(ACTIVITY_CITY);
 
 
   const handleChange = e => {
-    console.log('hello world');
     if (e.target.name === 'searchedEvents') {
       console.log(e.target.value);
       setSearchedEvents(e.target.value)
@@ -106,7 +106,7 @@ export default function Home() {
     }
     // console.log(e.target.id);
   };
-    
+
 
 
 
@@ -114,54 +114,20 @@ export default function Home() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    clicked ? setClicked(false) : setClicked(true)
 
-    // console.log(called);
-    // console.log(data);
-    // console.log(loading);
-
-
-    // const form = e.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // } console.log(form.checkValidity());
-    // try {
-    //   console.log(searchedEvents);
-    //   console.log(searchedLocation);
-    //   const { data } = await activitiesByActivityCity({
-    //     variables: {
-    //       city: searchedLocation,
-    //       activity: searchedEvents,
-    //     },
-    //   });
-    //   console.log(data);
-
-
-    //   console.log('here i am');
-    //   // console.log(response)
-    //   console.log(searchedEvents);
-    //   console.log(searchedLocation);
-
-    //   // const response = await (searchedEvents, searchedLocation);
-
-    //   // if (!response.ok) {
-    //   //   throw new Error("something went wrong!");
-    //   // }
-
-    //   // const { items } = await response.json();
-
-     
-
-
-
-
-
-    //   // setSearchedEvents(eventsData);
-    // } catch (err) {
-    //   console.error(err);
-    // }
-  };
+    try {
+      const { data } = await activitiesByActivityCity({
+        variables: {
+          city: searchedLocation,
+          activity: searchedEvents,
+        },
+      });
+      debugger;
+      setGql(data.activitiesByActivityCity);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
 
@@ -232,11 +198,11 @@ export default function Home() {
             <CustomButton type='submit' >Search</CustomButton>
           </form>
 
-     
-                {clicked ? 
-          (<container style={{display: 'flex', margin: '0 auto', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <h2>{hardCode.length ? `Viewing ${hardCode.length} results:`: ""}</h2>
-            {hardCode.map((e) => {
+
+
+          <container style={{ display: 'flex', margin: '0 auto', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <h2>{gql.length ? `Viewing ${gql.length} results:` : ""}</h2>
+            {gql.map((e) => {
               return (
                 <Card
                   sx={{
@@ -245,8 +211,8 @@ export default function Home() {
                     display: "flex",
                     flexWrap: 'wrap',
                     flexDirection: 'row',
-                    justifyContent:'center',
-                    alignContent:'center',
+                    justifyContent: 'center',
+                    alignContent: 'center',
                     margin: '5px'
                   }}
                 >
@@ -275,120 +241,12 @@ export default function Home() {
                 </Card>
               )
             })}
-          </container>) : null}
+          </container>
         </main>
       </header>
     </div>
   );
 }
-
-
-
-
-
-{/* <container>
-<h2>{eventList.length ? `Viewing ${eventList.length} results:` : "Search for a book to begin"}</h2>
-{hardCode.map((e) => {
-  return (
-    <Card
-      sx={{
-        border: "10px solid black",
-        width: "25%",
-        display: "block",
-      }}
-    >
-      <CardContent>
-        <Typography
-          sx={{ fontSize: 14 }}
-          color="text.secondary"
-          gutterBottom
-        >
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
-        </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
-  )
-})}
-</container> */}
-
-
-const hardCode = [
-  {
-    "_id": "628fd888627827807255b5cd",
-    "name": "Send it Clubbing",
-    "city": "Atlanta",
-    "lng": null,
-    "lat": null,
-    "description": "Let's have a Send it time Clubbing in Atlanta",
-    "participants": [],
-    "location": "Atlanta"
-  },
-  {
-    "_id": "628fd888627827807255b5e5",
-    "name": "Go Go Clubbing",
-    "city": "Atlanta",
-    "lng": null,
-    "lat": null,
-    "description": "Let's have a Go Go time Clubbing in Atlanta",
-    "participants": [],
-    "location": "Atlanta"
-  },
-  {
-    "_id": "628fd888627827807255b5f0",
-    "name": "Super Clubbing",
-    "city": "Atlanta",
-    "lng": null,
-    "lat": null,
-    "description": "Let's have a Super time Clubbing in Atlanta",
-    "participants": [],
-    "location": "Atlanta"
-  },
-  {
-    "_id": "628fd888627827807255b5fe",
-    "name": "Super Clubbing",
-    "city": "Atlanta",
-    "lng": null,
-    "lat": null,
-    "description": "Let's have a Super time Clubbing in Atlanta",
-    "participants": [],
-    "location": "Atlanta"
-  },
-  {
-    "_id": "628fd888627827807255b612",
-    "name": "Poppin' Clubbing",
-    "city": "Atlanta",
-    "lng": null,
-    "lat": null,
-    "description": "Let's have a Poppin' time Clubbing in Atlanta",
-    "participants": [],
-    "location": "Atlanta"
-  },
-  {
-    "_id": "628fd888627827807255b624",
-    "name": "Vibing Clubbing",
-    "city": "Atlanta",
-    "lng": null,
-    "lat": null,
-    "description": "Let's have a Vibing time Clubbing in Atlanta",
-    "participants": [],
-    "location": "Atlanta"
-  }
-]
-
 
 
 const eventList = [

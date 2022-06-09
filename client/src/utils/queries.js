@@ -11,12 +11,7 @@ export const ACTIVITY_CITY = gql`
       lng
       lat
       description
-      participants {
-        _id
-        username
-        email
-        shortBio
-      }
+      
     }
   }
 `;

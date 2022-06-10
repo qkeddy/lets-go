@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import { Alert, AlertTitle } from "@mui/material";
+import { Alert } from "@mui/material";
 
 // Reference required mutation for logging in a user
 import { LOGIN_USER } from "../utils/mutations";
@@ -40,7 +40,7 @@ const LoginForm = () => {
     // Handling state change of login form
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        console.log(`Name: ${name} and Value: ${value}`);
+        // console.log(`Name: ${name} and Value: ${value}`);
         setUserFormData({ ...userFormData, [name]: value });
     };
 
@@ -94,7 +94,13 @@ const LoginForm = () => {
                             Log In
                         </Button>
 
-
+                        {showAlert ? (
+                            <Alert onClose={() => setShowAlert(false)} variant="filled" severity="error">
+                                Wrong username or password
+                            </Alert>
+                        ) : (
+                            <></>
+                        )}
                     </Stack>
                 </Box>
             </Fade>

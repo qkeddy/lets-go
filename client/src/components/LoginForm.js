@@ -96,7 +96,7 @@ const LoginForm = () => {
 
                         {showAlert ? (
                             <Alert onClose={() => setShowAlert(false)} variant="filled" severity="error">
-                                Wrong username or password
+                                Wrong username or password or create an account
                             </Alert>
                         ) : (
                             <></>

@@ -13,8 +13,7 @@ import Modal from "@mui/material/Modal";
 import { Link } from "react-router-dom";
 
 // Import components
-import SignupForm from "./SignupForm";
-import LoginForm from "./LoginForm";
+import LoginSignupTabs from "./LoginSignupTabs"
 import Auth from "../utils/auth";
 
 const Navbar = () => {
@@ -56,7 +55,9 @@ const Navbar = () => {
             >
                 {/* Wrapping in a second div solves the issue of refs */}
                 <div>
-                    <LoginForm />
+                    {/* <LoginForm /> */}
+                    <LoginSignupTabs />
+
                 </div>
             </Modal>
         </div>

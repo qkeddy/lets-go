@@ -5,9 +5,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 
 // Import Material UI components
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Fade from "@mui/material/Fade";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 

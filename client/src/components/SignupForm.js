@@ -17,15 +17,9 @@ import { CREATE_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 
 const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
+    display: "flex",
+    alignItems: "center",
+    "& > :not(style)": { m: 1 },
 };
 
 const SignupForm = () => {
@@ -82,31 +76,18 @@ const SignupForm = () => {
 
     return (
         <>
-            <Fade in={true}>
-                <Box sx={style} component="form" onSubmit={handleSubmit}>
-                    <Stack
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            "& > :not(style)": { m: 1 },
-                        }}
-                    >
-                        <h3>Welcome To Let's Go</h3>
-                        {/* username or email */}
-                        <TextField helperText="Please select a username " id="usernameID" label="Username" value={username} onChange={handleChange} required />
+            <Stack component="form" onSubmit={handleSubmit} sx={style}>
+                <TextField helperText="Please select a username " id="usernameID" label="Username" value={username} onChange={handleChange} required />
 
-                        <TextField helperText="Please enter an email" id="emailID" label="Email" value={email} onChange={handleChange} required />
-                        {/* password */}
-                        <TextField helperText="Please select a password" id="passwordID" label="Password" type="password" value={password} onChange={handleChange} required />
+                <TextField helperText="Please enter an email" id="emailID" label="Email" value={email} onChange={handleChange} required />
 
-                        <Button variant="outlined" type="submit">
-                            Sign Up
-                        </Button>
+                <TextField helperText="Please select a password" id="passwordID" label="Password" type="password" value={password} onChange={handleChange} required />
 
-                        {username}
-                    </Stack>
-                </Box>
-            </Fade>
+                <Button variant="outlined" type="submit">
+                    Sign Up
+                </Button>
+            </Stack>
+            {error && <div>Something went wrong...</div>}
         </>
     );
 };

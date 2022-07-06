@@ -15,6 +15,12 @@ import { LOGIN_USER } from "../utils/mutations";
 
 import Auth from "../utils/auth";
 
+const style = {
+    display: "flex",
+    alignItems: "center",
+    "& > :not(style)": { m: 1 },
+};
+
 const LoginForm = () => {
     const [userFormData, setUserFormData] = useState({ username: "", password: "" });
     // const [validated] = useState(false);
@@ -62,15 +68,7 @@ const LoginForm = () => {
 
     return (
         <>
-            <Stack
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    "& > :not(style)": { m: 1 },
-                }}
-            >
+            <Stack component="form" onSubmit={handleSubmit} sx={style}>
                 <TextField type="text" placeholder="Your username" name="username" value={userFormData.username} onChange={handleInputChange} required />
 
                 <TextField type="password" placeholder="Your password" name="password" value={userFormData.password} onChange={handleInputChange} required />

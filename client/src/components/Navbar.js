@@ -55,7 +55,6 @@ const Navbar = () => {
             >
                 {/* Wrapping in a second div solves the issue of refs */}
                 <>
-                    {/* <LoginForm /> */}
                     <LoginSignupTabs />
                 </>
             </Modal>

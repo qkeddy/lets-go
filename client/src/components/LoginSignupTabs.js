@@ -62,6 +62,7 @@ export default function BasicTabs() {
         <>
             <Fade in={true}>
                 <Box sx={style}>
+                    <h3>Welcome To Let's Go</h3>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                             <Tab label="Login" {...a11yProps(0)} />

@@ -2,15 +2,15 @@
 import React, { useState } from "react";
 
 // Import Material UI components
+import Fade from "@mui/material/Fade";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { Container } from "@mui/material";
 
 import SignupForm from "./SignupForm";
 import LoginForm from "./LoginForm";
-
 
 const style = {
     position: "absolute",
@@ -24,16 +24,15 @@ const style = {
     p: 4,
 };
 
-
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, classes, ...other } = props;
 
     return (
         <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
             {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
+                <Container>
+                    <Box>{children}</Box>
+                </Container>
             )}
         </div>
     );
@@ -60,20 +59,28 @@ export default function BasicTabs() {
     };
 
     return (
-        <Box sx={style}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Login" {...a11yProps(0)} />
-                    <Tab label="Sign Up" {...a11yProps(1)} />
-                </Tabs>
-            </Box>
-            <TabPanel value={value} index={0}>
-                Login
-  
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                Sign Up
-            </TabPanel>
-        </Box>
+        <>
+            <Fade in={true}>
+                <Box sx={style}>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                            <Tab label="Login" {...a11yProps(0)} />
+                            <Tab label="Sign Up" {...a11yProps(1)} />
+                        </Tabs>
+                    </Box>
+
+                    <TabPanel value={value} index={0}>
+                        <>
+                            <LoginForm />
+                        </>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <>
+                            <SignupForm />
+                        </>
+                    </TabPanel>
+                </Box>
+            </Fade>
+        </>
     );
 }
